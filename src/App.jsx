@@ -22,10 +22,39 @@ const App = () => {
     });
   };
 
+  const handleCancelAddProject = () => {
+    setProjectState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+      };
+    });
+  };
+
+  const handleAddProject = (projectData) => {
+    const newProject = {
+      ...projectData,
+      id: Math.random(), // id는 중복되면 안되서 좋은 방법이 아니지만, 연습용 코드임.
+    };
+
+    setProjectState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        projects: [...prevState.projects, newProject], // 이전 프로젝트 데이터들은 전부 ...prevState.projects에 담겨 있고, 새로운 프로젝트를 추가함.
+      };
+    });
+  };
+
   let content;
   if (projectsState.selectedProjectId === null) {
     // 새 프로젝트 추가
-    content = <NewProject />;
+    content = (
+      <NewProject
+        onAddProject={handleAddProject}
+        onCancel={handleCancelAddProject}
+      />
+    );
   } else if (projectsState.selectedProjectId === undefined) {
     // 프로젝트 없을 때
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
@@ -33,7 +62,10 @@ const App = () => {
 
   return (
     <main className="h-screen my-8 flex gap-8">
-      <ProjectsSidebar onStartAddProject={handleStartAddProject} />
+      <ProjectsSidebar
+        onStartAddProject={handleStartAddProject}
+        projects={projectsState.projects}
+      />
       {content}
     </main>
   );
