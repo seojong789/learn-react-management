@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 // isTextArea : NewProject에서 Input Component를 호출하는데, isTextArea가 true라면 <textarea>가 렌더링된다.
-const Input = ({ label, isTextarea, ...props }) => {
+const Input = forwardRef(({ label, isTextarea, ...props }, ref) => {
   const classes =
     'w-full p-1 border-b-2 rounded-sm border-stone-300 bg-stone-200 text-stone-600 focus:outline-none focus:border-stone-600';
 
@@ -11,12 +11,12 @@ const Input = ({ label, isTextarea, ...props }) => {
         {label}
       </label>
       {isTextarea ? (
-        <textarea className={classes} {...props} />
+        <textarea ref={ref} className={classes} {...props} />
       ) : (
-        <input className={classes} {...props} />
+        <input ref={ref} className={classes} {...props} />
       )}
     </p>
   );
-};
+});
 
 export default Input;
